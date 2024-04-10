@@ -1,6 +1,6 @@
 import { RangeValue } from "@react-types/shared";
 import { DateValue } from "@react-types/datepicker";
-import { BookedPeriod } from "./types";
+import { BookedPeriod } from "../types";
 
 type CalculatePriceParams = {
   range: RangeValue<DateValue>;
