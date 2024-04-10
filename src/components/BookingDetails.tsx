@@ -28,7 +28,7 @@ export function BookingDetails({ bookedPeriod }: BookingPeriodProps) {
   ];
 
   return (
-    <View marginY="size-300">
+    <View>
       {priceData.map((el, i) => (
         <View
           key={el.label}

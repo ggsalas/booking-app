@@ -6,7 +6,11 @@ import {
   useMatch,
   useSearchParams,
 } from "react-router-dom";
-import { getBookings, getProperties, setInitialData } from "../utils/dataHandler";
+import {
+  getBookings,
+  getProperties,
+  setInitialData,
+} from "../utils/dataHandler";
 import { Property } from "../types";
 import LinkButton from "../components/LinkButton";
 
@@ -51,6 +55,7 @@ export default function Layout() {
             width="100%"
             borderBottomWidth="thick"
             backgroundColor="static-white"
+            UNSAFE_style={{ justifyContent: "center", display: "flex" }}
           >
             <Flex
               maxWidth={{ L: "1200px", M: "100%", S: "100%" }}
@@ -65,7 +70,11 @@ export default function Layout() {
                 )}
               </Flex>
 
-              <Flex width="40%" justifyContent="center">
+              <Flex
+                width="40%"
+                justifyContent="center"
+                UNSAFE_style={{ fontSize: "clamp(6px, 2vw, 15px)" }}
+              >
                 <Heading level={1}>Booking App</Heading>
               </Flex>
 

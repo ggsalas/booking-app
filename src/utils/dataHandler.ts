@@ -1,4 +1,4 @@
-import properties from "../utils/mockedProperties.json";
+import properties from "../utils/mockedProperties";
 import { BookedPeriod, Property } from "../types";
 
 const LS_PROPERTIES_KEY = "__properties__";
@@ -9,7 +9,6 @@ function wait(time: number) {
 
 export function setInitialData() {
   const hasData = localStorage.getItem(LS_PROPERTIES_KEY);
-  console.log({ hasData });
 
   if (!hasData) {
     console.log("Saving initial data");

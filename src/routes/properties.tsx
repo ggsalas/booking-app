@@ -1,4 +1,12 @@
-import { Grid, Image, Text, View, Flex } from "@adobe/react-spectrum";
+import {
+  Grid,
+  Image,
+  Text,
+  View,
+  Flex,
+  Heading,
+  Well,
+} from "@adobe/react-spectrum";
 import { Link, useRouteLoaderData, useSearchParams } from "react-router-dom";
 import { getPropertyPeriods } from "../utils/dataHandler";
 import { formatCurrency } from "../utils/formatters";
@@ -33,15 +41,29 @@ export default function Properties() {
     }
   };
 
+  if (displayedProperties.length === 0) {
+    return (
+      <Flex marginY="size-200" alignItems="center">
+        <Well>No properties found</Well>
+      </Flex>
+    );
+  }
+
   return (
     <Grid
       columns={{ L: "repeat(3, 1fr)", M: "repeat(2, 1fr)", S: "1fr" }}
       gap="size-100"
       width={{ L: "1200px", M: "100%", base: "100%" }}
       marginY="size-200"
+      data-testid="properties-grid"
     >
       {displayedProperties.map((property: Property, index: number) => (
-        <View key={index} width="auto" flexShrink={1}>
+        <View
+          key={index}
+          width="auto"
+          flexShrink={1}
+          data-testid="properties-grid-item"
+        >
           <Link
             to={property.id}
             style={{ textDecoration: "initial", color: "initial" }}
@@ -75,7 +97,9 @@ export default function Properties() {
                   flexGrow={1}
                 >
                   <View>
-                    <Text marginTop="size-100">{property.title}</Text>
+                    <Heading level={3} marginTop="size-100">
+                      {property.title}
+                    </Heading>
                     <Text marginTop="size-100">{property.description}</Text>
                   </View>
 

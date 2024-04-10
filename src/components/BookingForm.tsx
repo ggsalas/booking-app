@@ -24,10 +24,11 @@ export default function BookingForm({
   onSubmit,
   submitLabel,
 }: BookingFormProps) {
-  const [formBookedPeriod, setFormBookedPeriod] = useState<
-    BookedPeriod | undefined
-  >(bookedPeriod);
-  const navigation = useNavigation()
+  const [formState, setFormState] = useState<{
+    bookedPeriod?: BookedPeriod;
+    error?: string;
+  }>({ bookedPeriod, error: undefined });
+  const navigation = useNavigation();
 
   const disabledRanges =
     disabledPeriods?.map(({ startDate, endDate }) => [
@@ -36,13 +37,25 @@ export default function BookingForm({
     ]) ?? [];
 
   const handleOnDateChange = (range: RangeValue<DateValue>) => {
+    // validate
+    const error =
+      disabledRanges.some(
+        (interval) =>
+          range &&
+          range.end.compare(interval[0]) >= 0 &&
+          range.start.compare(interval[1]) <= 0
+      ) || range.end.compare(range.start) < 0
+        ? "Selected dates are not allowed"
+        : undefined;
+
+    // update value
     const newBookedPeriod = calculateBookingPeriod({
       range,
       pricePerDay,
       id: bookedPeriod?.id,
     });
 
-    setFormBookedPeriod(newBookedPeriod);
+    setFormState({ bookedPeriod: newBookedPeriod, error });
   };
 
   const periodToRange = (period?: BookedPeriod) => {
@@ -54,47 +67,45 @@ export default function BookingForm({
     };
   };
 
+  console.log(formState)
   return (
     <View marginY="size-300">
       <DateRangePicker
+        isRequired
         width="100%"
         aria-label="book this property"
+        data-testid="date-range-input"
         minValue={today(getLocalTimeZone())}
-        value={periodToRange(formBookedPeriod)}
+        value={periodToRange(formState.bookedPeriod)}
         isDateUnavailable={(date) =>
           disabledRanges.some(
             (interval) =>
               date.compare(interval[0]) >= 0 && date.compare(interval[1]) <= 0
           )
         }
-        validate={(value) =>
-          disabledRanges.some(
-            (interval) =>
-              value &&
-              value.end.compare(interval[0]) >= 0 &&
-              value.start.compare(interval[1]) <= 0
-          )
-            ? "Selected date range may not include unavailable dates."
-            : null
-        }
-        validationBehavior="native"
+        validate={() => formState.error}
+        errorMessage={<div data-testid='error-message'>{formState.error}</div>}
         onChange={handleOnDateChange}
       />
 
-      {formBookedPeriod && (
-        <>
-          <BookingDetails bookedPeriod={formBookedPeriod} />
-          <Button
-            variant="accent"
-            type="submit"
-            width="100%"
-            onPress={() => onSubmit(formBookedPeriod)}
-            isDisabled={navigation.state !== "idle"}
-          >
-            {submitLabel}
-          </Button>
-        </>
-      )}
+      <View marginY="size-300">
+        {formState.bookedPeriod && !formState.error && (
+          <BookingDetails bookedPeriod={formState.bookedPeriod} />
+        )}
+        <Button
+          variant="accent"
+          type="submit"
+          width="100%"
+          onPress={() => onSubmit(formState.bookedPeriod)}
+          isDisabled={
+            !formState.bookedPeriod ||
+            !!formState.error ||
+            navigation.state !== "idle"
+          }
+        >
+          {submitLabel}
+        </Button>
+      </View>
     </View>
   );
 }
