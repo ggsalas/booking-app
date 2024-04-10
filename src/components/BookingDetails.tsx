@@ -1,5 +1,5 @@
-import { Flex, View, Well } from "@adobe/react-spectrum";
-import { formatCurrency } from "../formatters";
+import { Flex, View } from "@adobe/react-spectrum";
+import { formatCurrency } from "../utils/formatters";
 import { BookedPeriod } from "../types";
 
 type BookingPeriodProps = {

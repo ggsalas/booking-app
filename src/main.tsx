@@ -7,9 +7,6 @@ import {
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import "./main.css";
-import { setInitialData } from "./dataHandler";
-
-setInitialData();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

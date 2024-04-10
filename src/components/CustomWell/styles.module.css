@@ -1,0 +1,7 @@
+.blue {
+  --spectrum-well-background-color: var(--spectrum-global-color-blue-500);
+  --spectrum-well-border-color: var(--spectrum-global-color-blue-500);
+  color: white;
+  text-align: center;
+}
+

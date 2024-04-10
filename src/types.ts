@@ -20,6 +20,6 @@ export type Property = {
   thumbnail: string;
   title : string;
   description: string;
-  pricePerDay: string;
+  pricePerDay: number;
   bookedPeriods: BookedPeriod[];
 }

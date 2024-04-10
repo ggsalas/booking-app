@@ -1,17 +1,24 @@
-import { Outlet, useLoaderData } from "react-router-dom";
+import { LoaderFunctionArgs, Outlet, useLoaderData } from "react-router-dom";
 import { Flex, View, Image } from "@adobe/react-spectrum";
-import { getProperty, getPropertyPeriods } from "../dataHandler";
+import { getProperty, getPropertyPeriods } from "../utils/dataHandler";
+import { BookedPeriod, Property as PropertyType } from "../types";
 
-export function loader({ params }) {
+export type LoaderReturn = {
+  property: PropertyType;
+  bookedPeriod: BookedPeriod | undefined;
+  disabledPeriods: BookedPeriod[];
+};
+
+export async function loader({ params }: LoaderFunctionArgs): Promise<LoaderReturn> {
   const { propertyId } = params;
-  const property = getProperty(propertyId);
-  const periods = getPropertyPeriods(property)
+  const property = getProperty(propertyId!);
+  const periods = getPropertyPeriods(property);
 
-  return { property, ...periods }
+  return { property, ...periods };
 }
 
 export default function Property() {
-  const { property } = useLoaderData();
+  const { property } = useLoaderData() as LoaderReturn
 
   return (
     <Flex
@@ -27,7 +34,7 @@ export default function Property() {
           width="100%"
           height="auto"
           objectFit="cover"
-          UNSAFE_style={{ aspectRatio: '16/9'}}
+          UNSAFE_style={{ aspectRatio: "16/9" }}
         />
       </View>
 

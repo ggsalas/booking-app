@@ -1,37 +1,34 @@
-import {
-  Grid,
-  Image,
-  Text,
-  Button,
-  View,
-  Well,
-  Flex,
-} from "@adobe/react-spectrum";
-import { Link, useLoaderData } from "react-router-dom";
-import { getProperties, getPropertyPeriods } from "../dataHandler";
-import { formatCurrency } from "../formatters";
+import { Grid, Image, Text, View, Flex } from "@adobe/react-spectrum";
+import { Link, useRouteLoaderData, useSearchParams } from "react-router-dom";
+import { getPropertyPeriods } from "../utils/dataHandler";
+import { formatCurrency } from "../utils/formatters";
 import { Property } from "../types";
 import { BookingDates } from "../components/BookingDates";
-
-export function loader() {
-  const properties = getProperties();
-
-  return { properties };
-}
+import { LoaderReturn } from "./layout";
+import CustomWell from "../components/CustomWell";
 
 export default function Properties() {
-  const { properties } = useLoaderData();
+  const { properties, bookings } = useRouteLoaderData(
+    "properties"
+  ) as LoaderReturn;
+  const [searchParams] = useSearchParams();
+  const showMyBookings = searchParams.get("filter") === "booked";
+  const displayedProperties = showMyBookings ? bookings : properties;
 
   const bookMessage = (property: Property) => {
     const { bookedPeriod } = getPropertyPeriods(property);
 
     if (bookedPeriod) {
-      return <BookingDates bookedPeriod={bookedPeriod} />;
+      return (
+        <CustomWell marginTop="size-200">
+          <BookingDates bookedPeriod={bookedPeriod} />
+        </CustomWell>
+      );
     } else {
       return (
-        <div style={{ textAlign: "right" }}>
-          Book for {formatCurrency(property.pricePerDay)} / day
-        </div>
+        <CustomWell color="blue" marginTop="size-200">
+          <span>Book for {formatCurrency(property.pricePerDay)} / day</span>
+        </CustomWell>
       );
     }
   };
@@ -43,7 +40,7 @@ export default function Properties() {
       width={{ L: "1200px", M: "100%", base: "100%" }}
       marginY="size-200"
     >
-      {properties.map((property: Property, index: number) => (
+      {displayedProperties.map((property: Property, index: number) => (
         <View key={index} width="auto" flexShrink={1}>
           <Link
             to={property.id}
@@ -82,9 +79,7 @@ export default function Properties() {
                     <Text marginTop="size-100">{property.description}</Text>
                   </View>
 
-                  <View marginTop="size-150">
-                    <Well marginTop="size-200">{bookMessage(property)}</Well>
-                  </View>
+                  <View marginTop="size-150">{bookMessage(property)}</View>
                 </Flex>
               </Flex>
             </View>

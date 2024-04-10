@@ -1,4 +1,4 @@
-import { formatDate } from "../formatters";
+import { formatDate } from "../utils/formatters";
 import { BookedPeriod } from "../types";
 
 type BookingDatesProps = {
@@ -9,7 +9,7 @@ export function BookingDates({ bookedPeriod }: BookingDatesProps) {
   const options = {
     day: "numeric",
     month: "short",
-  };
+  } as Intl.DateTimeFormatOptions;
   const start = formatDate(bookedPeriod?.startDate, options);
   const end = formatDate(bookedPeriod?.endDate, options);
   const year = formatDate(bookedPeriod?.endDate, { year: "numeric" });

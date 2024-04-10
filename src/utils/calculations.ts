@@ -5,14 +5,15 @@ import { BookedPeriod } from "./types";
 type CalculatePriceParams = {
   range: RangeValue<DateValue>;
   pricePerDay: number;
+  id?: number;
 };
 
 // Hardcoded values
 const SERVICE_PRICE = 0.1;
 const USER_ID = 'me';
 
-export function calculateBookingPeriod({ range, pricePerDay }: CalculatePriceParams): BookedPeriod {
-  const id = Date.now();
+export function calculateBookingPeriod({ range, pricePerDay, id: idOriginal }: CalculatePriceParams): BookedPeriod {
+  const id =  idOriginal || Date.now();
   const startDate = range.start.toString();
   const endDate = range.end.toString();
   const days = range.end.compare(range.start) + 1;

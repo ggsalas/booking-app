@@ -1,5 +1,4 @@
 import { DateFormatter } from "@internationalized/date";
-import { BookedPeriod } from "./types";
 
 export function formatCurrency(
   amount?: number,
@@ -18,7 +17,12 @@ export function formatCurrency(
 export function formatDate(date: string, options: Intl.DateTimeFormatOptions) {
   if (!date) return "";
 
-  const formatter = new DateFormatter("en-US", options);
+  const formatter = new DateFormatter("en-US", {
+    ...options,
+    // Get date time for GMT+0:00
+    // because is not considering timezones at this moment
+    timeZone: "Africa/Casablanca",
+  });
 
   return formatter.format(new Date(date));
 }

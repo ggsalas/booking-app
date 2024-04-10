@@ -1,25 +1,33 @@
 import BookingForm from "../components/BookingForm";
-import { Link, useRouteLoaderData, useSubmit } from "react-router-dom";
+import {
+  LoaderFunctionArgs,
+  useRouteLoaderData,
+  useSubmit,
+} from "react-router-dom";
 import { BookedPeriod } from "../types";
-import { createBookedPeriod } from "../dataHandler";
+import { createBookedPeriod } from "../utils/dataHandler";
 import { BookingDetails } from "../components/BookingDetails";
-import { Well } from "@adobe/react-spectrum";
 import { BookingDates } from "../components/BookingDates";
+import { LoaderReturn } from "./property";
+import LinkButton from "../components/LinkButton";
+import { Well } from "@adobe/react-spectrum";
 
-export async function action({ request }) {
+export async function action({ request }: LoaderFunctionArgs) {
   const data = await request.json();
-
-  createBookedPeriod(data);
-
+  await createBookedPeriod(data);
   return data;
 }
 
 export default function PropertyIndex() {
   const submit = useSubmit();
-  const { property, disabledPeriods, bookedPeriod } =
-    useRouteLoaderData("property");
+  const { property, disabledPeriods, bookedPeriod } = useRouteLoaderData(
+    "property"
+  ) as LoaderReturn;
 
-  const handleSubmit = (data: BookedPeriod) => {
+  const handleSubmit = (data: {
+    bookedPeriod: BookedPeriod;
+    propertyId: string;
+  }) => {
     submit(data, {
       method: "post",
       encType: "application/json",
@@ -37,20 +45,23 @@ export default function PropertyIndex() {
 
         <BookingDetails bookedPeriod={bookedPeriod} />
 
-        <Link to="edit">Change booking</Link>
-        <Link to="delete">Delete</Link>
+        <LinkButton to="edit">Change booking</LinkButton>
       </div>
     );
   } else {
     return (
       <>
         <h3>Book this property</h3>
+
         <BookingForm
           disabledPeriods={disabledPeriods}
-          pricePerDay={property.pricePerDay}
-          onSubmit={(bookedPeriod: BookedPeriod) =>
-            handleSubmit({ bookedPeriod, propertyId: property.id })
-          }
+          pricePerDay={Number(property.pricePerDay)}
+          onSubmit={(bookedPeriod: BookedPeriod | undefined) => {
+            if (bookedPeriod) {
+              handleSubmit({ bookedPeriod, propertyId: property.id });
+            }
+          }}
+          submitLabel="Book this property"
         />
       </>
     );
