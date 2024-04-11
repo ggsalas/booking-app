@@ -16,8 +16,8 @@ const mockedProperties = {
           id: "b1",
         },
         {
-          startDate: "2024-05-10",
-          endDate: "2024-05-15",
+          startDate: "2024-05-16",
+          endDate: "2024-05-17",
           userId: null,
           id: "b2",
         },

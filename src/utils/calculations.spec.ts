@@ -3,10 +3,6 @@ import { DateValue } from "@react-types/datepicker";
 import { calculateBookingPeriod } from "./calculations";
 import { CalendarDate } from "@internationalized/date";
 
-// The reservation is by complete day
-// A future improvement should be split the day in 2 considering checking and checkout hours.
-// The startDate should always be at checking time
-// The endDate should always be at checkout time
 test("should calculate a booking period from date range and price", () => {
   const range: RangeValue<DateValue> = {
     start: new CalendarDate(2024, 4, 10),
@@ -19,7 +15,7 @@ test("should calculate a booking period from date range and price", () => {
 
   expect(bookingPeriod).toMatchObject({
     calculations: {
-      days: 5,
+      days: 4,
       priceFinal: 660,
       priceRent: 600,
       priceService: 60,

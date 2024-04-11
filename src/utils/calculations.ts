@@ -16,7 +16,7 @@ export function calculateBookingPeriod({ range, pricePerDay, id: idOriginal }: C
   const id =  idOriginal || Date.now();
   const startDate = range.start.toString();
   const endDate = range.end.toString();
-  const days = range.end.compare(range.start) + 1;
+  const days = range.end.compare(range.start);
   const priceRent = pricePerDay * days;
   const priceService = priceRent * SERVICE_PRICE;
   const priceFinal = priceRent + priceService;

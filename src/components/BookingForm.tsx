@@ -30,10 +30,11 @@ export default function BookingForm({
   }>({ bookedPeriod, error: undefined });
   const navigation = useNavigation();
 
+  // The end date is the previous date, because the checkout is at 10am
   const disabledRanges =
     disabledPeriods?.map(({ startDate, endDate }) => [
       parseDate(startDate),
-      parseDate(endDate),
+      parseDate(endDate).subtract({ days: 1 }),
     ]) ?? [];
 
   const handleOnDateChange = (range: RangeValue<DateValue>) => {
@@ -44,7 +45,7 @@ export default function BookingForm({
           range &&
           range.end.compare(interval[0]) >= 0 &&
           range.start.compare(interval[1]) <= 0
-      ) || range.end.compare(range.start) < 0
+      ) || range.end.compare(range.start) <= 0
         ? "Selected dates are not allowed"
         : undefined;
 
@@ -86,10 +87,6 @@ export default function BookingForm({
         errorMessage={<div data-testid="error-message">{formState.error}</div>}
         onChange={handleOnDateChange}
       />
-
-      <View marginY="size-150">
-        <Text>Select full days. The checkout will be on next day 10AM</Text>
-      </View>
 
       <View marginY="size-300">
         {formState.bookedPeriod && !formState.error && (

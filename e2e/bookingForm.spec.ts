@@ -12,7 +12,7 @@ test.describe("Form actions", () => {
     await page.getByLabel('Wednesday, April 17,').click();
     await page.getByLabel('Friday, April 19,').click();
 
-    await expect(page.getByText("$396.00")).toBeVisible();
+    await expect(page.getByText("$264.00")).toBeVisible();
     await page
       .getByRole("button", { name: "Book this property", exact: true })
       .click();
@@ -20,7 +20,7 @@ test.describe("Form actions", () => {
     // After submit
     await expect(page.getByText("Your booking is saved")).toBeVisible();
     await expect(page.getByText("Apr 17 to Apr 19 of")).toBeVisible();
-    await expect(page.getByText("$396.00")).toBeVisible();
+    await expect(page.getByText("$264.00")).toBeVisible();
   };
 
   test("should create a booking with a range of days do a complete navigation", async ({
@@ -34,10 +34,10 @@ test.describe("Form actions", () => {
 
     await page.getByRole("link", { name: "Change booking" }).click();
 
-    // Select single day
+    // Select other range
     await page.getByTestId("date-range-input").getByRole("button").click();
     await page.getByLabel('Saturday, April 20,').click();
-    await page.getByLabel('Saturday, April 20,').click();
+    await page.getByLabel('Sunday, April 21,').click();
 
     await expect(page.getByText("$132.00")).toBeVisible();
     await page
@@ -46,7 +46,7 @@ test.describe("Form actions", () => {
 
     // After submit
     await expect(page.getByText("Your booking is saved")).toBeVisible();
-    await expect(page.getByText("Apr 20 of 2024")).toBeVisible();
+    await expect(page.getByText("Apr 20 to Apr 21 of 2024")).toBeVisible();
     await expect(page.getByText("$132.00")).toBeVisible();
   });
 
@@ -63,7 +63,7 @@ test.describe("Form actions", () => {
     ).toBeVisible();
     await expect(page.getByText("Your booking is saved")).toBeHidden();
     await expect(page.getByText("Apr 17 to Apr 19 of")).toBeHidden();
-    await expect(page.getByText("$396.00")).toBeHidden();
+    await expect(page.getByText("$264.00")).toBeHidden();
   });
 
   test("should display error if wrong days are selected", async ({ page }) => {

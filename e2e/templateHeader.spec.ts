@@ -32,12 +32,12 @@ test.describe("Template Header", () => {
     await page.getByTestId("date-range-input").getByRole("button").click();
     await page.getByLabel("17").click();
     await page.getByLabel("19").click();
-    await expect(page.getByText('$396.00')).toBeVisible();
+    await expect(page.getByText('$264.00')).toBeVisible();
     await page.getByRole('button', { name: 'Book this property', exact: true }).click()
 
     await expect(page.getByText('Your booking is saved')).toBeVisible();
     await expect(page.getByText('Apr 17 to Apr 19 of')).toBeVisible();
-    await expect(page.getByText('$396.00')).toBeVisible();
+    await expect(page.getByText('$264.00')).toBeVisible();
 
     // header link should appear after first booking
     await page.getByRole('link', { name: 'Booked' }).click()
