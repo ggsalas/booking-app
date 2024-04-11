@@ -1,6 +1,14 @@
 import properties from "../utils/mockedProperties";
 import { BookedPeriod, Property } from "../types";
 
+// NOTE:
+// Since this is a frontend only app, this data handler file is using a plain
+// object in the browser localStorage. In a production app should be using a
+// backend API with a database.
+//
+// In that case there is no need to use global state for the data received from
+// the backend.
+
 const LS_PROPERTIES_KEY = "__properties__";
 
 function wait(time: number) {

@@ -1,4 +1,4 @@
-import { Button, DateRangePicker, Text, View } from "@adobe/react-spectrum";
+import { Button, DateRangePicker, View } from "@adobe/react-spectrum";
 import { today, getLocalTimeZone } from "@internationalized/date";
 import type { BookedPeriod } from "../types";
 import { parseDate } from "@internationalized/date";
@@ -16,6 +16,10 @@ type BookingFormProps = {
   onSubmit: (data: BookedPeriod | undefined) => void;
   submitLabel: string;
 };
+type BookingFormState = {
+  bookedPeriod?: BookedPeriod;
+  error?: string;
+};
 
 export default function BookingForm({
   bookedPeriod = undefined,
@@ -24,13 +28,14 @@ export default function BookingForm({
   onSubmit,
   submitLabel,
 }: BookingFormProps) {
-  const [formState, setFormState] = useState<{
-    bookedPeriod?: BookedPeriod;
-    error?: string;
-  }>({ bookedPeriod, error: undefined });
+  const [formState, setFormState] = useState<BookingFormState>({
+    bookedPeriod,
+    error: undefined,
+  });
   const navigation = useNavigation();
 
-  // The end date is the previous date, because the checkout is at 10am
+  // The end date is the previous day, because the checkout is at the morning
+  // so the place is available on the end day.
   const disabledRanges =
     disabledPeriods?.map(({ startDate, endDate }) => [
       parseDate(startDate),
@@ -49,7 +54,7 @@ export default function BookingForm({
         ? "Selected dates are not allowed"
         : undefined;
 
-    // update value
+    // update values
     const newBookedPeriod = calculateBookingPeriod({
       range,
       pricePerDay,

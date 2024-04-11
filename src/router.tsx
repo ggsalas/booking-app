@@ -32,7 +32,6 @@ export const router = createBrowserRouter(
           loader={loaderLayout}
         >
           <Route index element={<Properties />} />
-
           <Route
             id="property"
             path=":propertyId"

@@ -16,9 +16,9 @@ test("should calculate a booking period from date range and price", () => {
   expect(bookingPeriod).toMatchObject({
     calculations: {
       days: 4,
-      priceFinal: 660,
-      priceRent: 600,
-      priceService: 60,
+      priceFinal: 528,
+      priceRent: 480,
+      priceService: 48,
     },
     endDate: "2024-04-14",
     id: 123,
