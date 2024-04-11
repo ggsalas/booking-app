@@ -1,4 +1,4 @@
-import { Button, DateRangePicker, View } from "@adobe/react-spectrum";
+import { Button, DateRangePicker, Text, View } from "@adobe/react-spectrum";
 import { today, getLocalTimeZone } from "@internationalized/date";
 import type { BookedPeriod } from "../types";
 import { parseDate } from "@internationalized/date";
@@ -67,7 +67,6 @@ export default function BookingForm({
     };
   };
 
-  console.log(formState)
   return (
     <View marginY="size-300">
       <DateRangePicker
@@ -84,9 +83,13 @@ export default function BookingForm({
           )
         }
         validate={() => formState.error}
-        errorMessage={<div data-testid='error-message'>{formState.error}</div>}
+        errorMessage={<div data-testid="error-message">{formState.error}</div>}
         onChange={handleOnDateChange}
       />
+
+      <View marginY="size-150">
+        <Text>Select full days. The checkout will be on next day 10AM</Text>
+      </View>
 
       <View marginY="size-300">
         {formState.bookedPeriod && !formState.error && (
